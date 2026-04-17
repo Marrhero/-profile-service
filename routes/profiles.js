@@ -1,9 +1,8 @@
 require('dotenv').config();
 const router = require('express').Router();
 const axios = require('axios');
-const{ v4: uuidv4 } = require('uuid');
+const { uuidv7 } = require('uuidv7');
 const { pool } = require('../database');
-const { Result } = require('pg');
 
 // POST /api/profiles
 router.post('/profiles', async (req, res) => {
@@ -103,7 +102,7 @@ router.post('/profiles', async (req, res) => {
     const country_id = topCountry.country_id;
     const country_probability = topCountry.probability;
 
-    const id = uuidv4();
+    const id = uuidv7();
     const created_at = new Date().toISOString();
 
 
@@ -170,7 +169,7 @@ router.get('/profiles', async(req, res) => {
 
     if (country_id) {
         params.push(country_id.toLowerCase());
-        query += ` AND LOWER(COUNTRY_ID) = $${params.length}`;
+        query += ` AND LOWER(country_id) = $${params.length}`;
     }
 
     if (age_group) {
